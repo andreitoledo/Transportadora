@@ -47,6 +47,14 @@ export const DrawerComponent = () => {
           <ListItemText primary="Contatos" />
         </ListItem>
 
+        {/* Adiciona Pedidos ao menu lateral */}
+        <ListItem button onClick={() => navigate('/pedidos')}>
+          <ListItemIcon>
+            <PeopleIcon /> {/* importe do MUI */}
+          </ListItemIcon>
+          <ListItemText primary="Pedidos" />
+        </ListItem>
+
       </List>
     </Drawer>
   );
