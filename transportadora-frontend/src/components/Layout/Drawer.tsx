@@ -31,11 +31,20 @@ export const DrawerComponent = () => {
           <ListItemText primary="Dashboard" />
         </ListItem>
 
+        {/* Adiciona Clientes ao menu lateral */}
         <ListItem button onClick={() => navigate('/clientes')}>
           <ListItemIcon>
             <PeopleIcon /> {/* importe do MUI */}
           </ListItemIcon>
           <ListItemText primary="Clientes" />
+        </ListItem>
+
+        {/* Adiciona Contatos ao menu lateral */}
+        <ListItem button onClick={() => navigate('/contatos')}>
+          <ListItemIcon>
+            <PeopleIcon /> {/* importe do MUI */}
+          </ListItemIcon>
+          <ListItemText primary="Contatos" />
         </ListItem>
 
       </List>

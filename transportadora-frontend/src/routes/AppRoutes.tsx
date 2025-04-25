@@ -4,6 +4,7 @@ import { Dashboard } from '../pages/Dashboard';
 import { useAuth } from '../context/AuthContext';
 import { Layout } from '../components/Layout/Layout';
 import { ClientesPage } from '../pages/Clientes/ClientesPage';
+import { ContatosPage } from '../pages/Contatos/ContatosPage';
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -31,6 +32,15 @@ export const AppRoutes = () => {
           element={
             <Layout>
               <ClientesPage />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/contatos"
+          element={
+            <Layout>
+              <ContatosPage />
             </Layout>
           }
         />
