@@ -29,7 +29,8 @@ export const PedidoFormDialog = ({
     valorMercadoria: '',
     peso: '',
     dimensoes: '',
-    tipoEntrega: '',
+    tipoEntrega: 'NORMAL',
+    status: 'AGUARDANDO_COLETA', // adicionado aqui
     enderecoColeta: '',
     enderecoEntrega: '',
     observacoes: '',
@@ -50,14 +51,21 @@ export const PedidoFormDialog = ({
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      setFormData({
+        ...initialData,
+        valorMercadoria: initialData.valorMercadoria || '',
+        peso: initialData.peso || '',
+        tipoEntrega: initialData.tipoEntrega || 'NORMAL',
+        status: initialData.status || 'AGUARDANDO_COLETA',
+      });
     } else {
       setFormData({
         descricao: '',
         valorMercadoria: '',
         peso: '',
         dimensoes: '',
-        tipoEntrega: '',
+        tipoEntrega: 'NORMAL',
+        status: 'AGUARDANDO_COLETA',
         enderecoColeta: '',
         enderecoEntrega: '',
         observacoes: '',
@@ -65,7 +73,7 @@ export const PedidoFormDialog = ({
         destinatarioId: '',
       });
     }
-  }, [initialData]);
+  }, [initialData, open]); // <- **Agora também limpa ao abrir**
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,12 +85,12 @@ export const PedidoFormDialog = ({
       valorMercadoria: parseFloat(formData.valorMercadoria),
       peso: parseFloat(formData.peso),
       tipoEntrega: formData.tipoEntrega || 'NORMAL',
-      status: formData.status || 'AGUARDANDO_COLETA', // necessário
+      status: formData.status || 'AGUARDANDO_COLETA',
     };
-  
+
     onSave(payload);
+    onClose(); // Fecha modal após salvar
   };
-  
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -98,6 +106,7 @@ export const PedidoFormDialog = ({
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               name="valorMercadoria"
@@ -108,6 +117,7 @@ export const PedidoFormDialog = ({
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               name="peso"
@@ -118,6 +128,7 @@ export const PedidoFormDialog = ({
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               name="dimensoes"
@@ -127,6 +138,7 @@ export const PedidoFormDialog = ({
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               select
@@ -144,6 +156,21 @@ export const PedidoFormDialog = ({
 
           <Grid item xs={6}>
             <TextField
+              select
+              name="status"
+              label="Status"
+              value={formData.status}
+              onChange={handleChange}
+              fullWidth
+            >
+              <MenuItem value="AGUARDANDO_COLETA">Aguardando Coleta</MenuItem>
+              <MenuItem value="EM_TRANSITO">Em Trânsito</MenuItem>
+              <MenuItem value="ENTREGUE">Entregue</MenuItem>
+            </TextField>
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
               name="enderecoColeta"
               label="Endereço de Coleta"
               value={formData.enderecoColeta}
@@ -151,6 +178,7 @@ export const PedidoFormDialog = ({
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               name="enderecoEntrega"
