@@ -3,6 +3,7 @@ import { Login } from '../pages/Login';
 import { Dashboard } from '../pages/Dashboard';
 import { useAuth } from '../context/AuthContext';
 import { Layout } from '../components/Layout/Layout';
+import { ClientesPage } from '../pages/Clientes/ClientesPage';
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -25,6 +26,15 @@ export const AppRoutes = () => {
         ) : (
           <Route path="*" element={<Navigate to="/login" replace />} />
         )}
+        <Route
+          path="/clientes"
+          element={
+            <Layout>
+              <ClientesPage />
+            </Layout>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );
