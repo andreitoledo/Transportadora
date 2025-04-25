@@ -37,12 +37,25 @@ export class PedidosService {
     });
   }
 
-  update(id: string, data: UpdatePedidoDto) {
+  async update(id: string, data: UpdatePedidoDto) {
     return this.prisma.pedido.update({
       where: { id },
-      data,
+      data: {
+        descricao: data.descricao,
+        valorMercadoria: data.valorMercadoria,
+        peso: data.peso,
+        dimensoes: data.dimensoes,
+        tipoEntrega: data.tipoEntrega,
+        status: data.status, // ✅ adicionar
+        enderecoColeta: data.enderecoColeta,
+        enderecoEntrega: data.enderecoEntrega,
+        observacoes: data.observacoes,
+        remetenteId: data.remetenteId,
+        destinatarioId: data.destinatarioId,
+      },
     });
   }
+  
 
   remove(id: string) {
     return this.prisma.pedido.delete({

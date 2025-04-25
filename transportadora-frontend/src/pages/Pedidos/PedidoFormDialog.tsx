@@ -30,7 +30,7 @@ export const PedidoFormDialog = ({
     peso: '',
     dimensoes: '',
     tipoEntrega: 'NORMAL',
-    status: 'AGUARDANDO_COLETA', // adicionado aqui
+    status: 'AGUARDANDO_COLETA',
     enderecoColeta: '',
     enderecoEntrega: '',
     observacoes: '',
@@ -73,24 +73,36 @@ export const PedidoFormDialog = ({
         destinatarioId: '',
       });
     }
-  }, [initialData, open]); // <- **Agora também limpa ao abrir**
+  }, [initialData, open]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  
 
   const handleSubmit = () => {
     const payload = {
-      ...formData,
+      ...(initialData?.id && { id: initialData.id }),
+      descricao: formData.descricao,
       valorMercadoria: parseFloat(formData.valorMercadoria),
       peso: parseFloat(formData.peso),
-      tipoEntrega: formData.tipoEntrega || 'NORMAL',
-      status: formData.status || 'AGUARDANDO_COLETA',
+      dimensoes: formData.dimensoes,
+      tipoEntrega: formData.tipoEntrega,
+      status: formData.status, // <<< apenas pega o que o usuário selecionou!
+      enderecoColeta: formData.enderecoColeta,
+      enderecoEntrega: formData.enderecoEntrega,
+      observacoes: formData.observacoes,
+      remetenteId: formData.remetenteId,
+      destinatarioId: formData.destinatarioId,
     };
-
+  
+    console.log('🔎 Payload enviado para salvar:', payload);
+  
     onSave(payload);
-    onClose(); // Fecha modal após salvar
+    onClose();
   };
+  
+  
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>

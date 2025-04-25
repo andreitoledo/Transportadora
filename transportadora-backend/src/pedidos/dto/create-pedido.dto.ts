@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsEnum, IsOptional, IsString, IsUUID, IsNumber } from 'class-validator';
-import { TipoEntrega } from '@prisma/client';
+import { TipoEntrega, StatusPedido } from '@prisma/client'; // importa também o StatusPedido
 
 export class CreatePedidoDto {
   @IsNotEmpty()
@@ -18,6 +18,9 @@ export class CreatePedidoDto {
 
   @IsEnum(TipoEntrega)
   tipoEntrega: TipoEntrega;
+
+  @IsEnum(StatusPedido) // 👈 adicionar aqui!
+  status: StatusPedido; // 👈 adicionar aqui!
 
   @IsOptional()
   @IsString()

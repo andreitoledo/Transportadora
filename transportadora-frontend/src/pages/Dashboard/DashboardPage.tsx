@@ -1,6 +1,18 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Pie, Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 export const DashboardPage = () => {
   const [totalPedidos, setTotalPedidos] = useState(0);
@@ -44,37 +56,64 @@ export const DashboardPage = () => {
     fetchPedidos();
   }, []);
 
+  const statusChartData = {
+    labels: ['Aguardando Coleta', 'Em Trânsito', 'Entregue'],
+    datasets: [
+      {
+        data: [
+          pedidosPorStatus.AGUARDANDO_COLETA,
+          pedidosPorStatus.EM_TRANSITO,
+          pedidosPorStatus.ENTREGUE,
+        ],
+        backgroundColor: ['#FFCD56', '#36A2EB', '#4CAF50'],
+      },
+    ],
+  };
+
+  const tipoChartData = {
+    labels: ['Normal', 'Expressa', 'Agendada'],
+    datasets: [
+      {
+        label: 'Tipo de Entrega',
+        data: [
+          pedidosPorTipo.NORMAL,
+          pedidosPorTipo.EXPRESSA,
+          pedidosPorTipo.AGENDADA,
+        ],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+      },
+    ],
+  };
+
   return (
     <Grid container spacing={3} padding={2}>
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={4}>
         <Paper elevation={3} style={{ padding: 16 }}>
           <Typography variant="h6">Total de Pedidos</Typography>
           <Typography variant="h4">{totalPedidos}</Typography>
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={4}>
         <Paper elevation={3} style={{ padding: 16 }}>
           <Typography variant="h6">Valor Total (R$)</Typography>
-          <Typography variant="h4">{valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Typography>
+          <Typography variant="h4">
+            {valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+          </Typography>
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={4}>
         <Paper elevation={3} style={{ padding: 16 }}>
           <Typography variant="h6">Status dos Pedidos</Typography>
-          <Typography variant="body1">Aguardando: {pedidosPorStatus.AGUARDANDO_COLETA}</Typography>
-          <Typography variant="body1">Em Trânsito: {pedidosPorStatus.EM_TRANSITO}</Typography>
-          <Typography variant="body1">Entregues: {pedidosPorStatus.ENTREGUE}</Typography>
+          <Pie data={statusChartData} />
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={6}>
         <Paper elevation={3} style={{ padding: 16 }}>
-          <Typography variant="h6">Tipo de Entrega</Typography>
-          <Typography variant="body1">Normal: {pedidosPorTipo.NORMAL}</Typography>
-          <Typography variant="body1">Expressa: {pedidosPorTipo.EXPRESSA}</Typography>
-          <Typography variant="body1">Agendada: {pedidosPorTipo.AGENDADA}</Typography>
+          <Typography variant="h6">Pedidos por Tipo de Entrega</Typography>
+          <Bar data={tipoChartData} />
         </Paper>
       </Grid>
     </Grid>
