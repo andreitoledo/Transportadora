@@ -125,11 +125,13 @@ export class AuthService {
 
 
   private getJwtToken(payload: JwtPayload) {
-
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+    });
     return token;
-
   }
+  
 
 
 }
