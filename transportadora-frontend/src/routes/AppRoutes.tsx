@@ -6,6 +6,7 @@ import { Layout } from '../components/Layout/Layout';
 import { ClientesPage } from '../pages/Clientes/ClientesPage';
 import { ContatosPage } from '../pages/Contatos/ContatosPage';
 import { PedidosPage } from '../pages/Pedidos/PedidosPage';
+import { DashboardPage } from '../pages/Dashboard/DashboardPage';
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -20,7 +21,7 @@ export const AppRoutes = () => {
               path="/"
               element={
                 <Layout>
-                  <Dashboard />
+                  <DashboardPage />
                 </Layout>
               }
             />
@@ -53,7 +54,7 @@ export const AppRoutes = () => {
               <PedidosPage />
             </Layout>
           }
-        />
+        />       
 
       </Routes>
     </BrowserRouter>
