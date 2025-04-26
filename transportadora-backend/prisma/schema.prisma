@@ -84,6 +84,8 @@ model Pedido {
   updatedAt DateTime @updatedAt
 
   coleta Coleta?
+
+  fatura  Fatura?
 }
 
 enum TipoEntrega {
@@ -186,3 +188,24 @@ enum StatusEntrega {
   ENTREGUE
   NAO_ENTREGUE
 }
+
+model Fatura {
+  id              String    @id @default(uuid())
+  pedidoId        String    @unique
+  valor           Decimal
+  status          StatusFatura @default(PENDENTE)
+  dataVencimento  DateTime
+  dataPagamento   DateTime?
+
+  pedido          Pedido   @relation(fields: [pedidoId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum StatusFatura {
+  PENDENTE
+  PAGO
+  CANCELADO
+}
+

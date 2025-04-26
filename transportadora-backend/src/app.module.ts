@@ -12,6 +12,7 @@ import { MotoristasModule } from './motoristas/motoristas.module';
 import { VeiculosModule } from './veiculos/veiculos.module';
 import { ColetasModule } from './coletas/coletas.module';
 import { EntregasModule } from './entregas/entregas.module';
+import { FaturasModule } from './faturas/faturas.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { EntregasModule } from './entregas/entregas.module';
     MotoristasModule,
     VeiculosModule,
     ColetasModule,
-    EntregasModule
+    EntregasModule,
+    FaturasModule
   ],
   controllers: [AppController],
   providers: [AppService],
