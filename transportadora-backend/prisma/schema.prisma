@@ -122,5 +122,25 @@ enum CategoriaCnh {
   E
 }
 
+model Veiculo {
+  id             String   @id @default(uuid())
+  placa          String   @unique
+  modelo         String
+  marca          String
+  ano            Int
+  capacidadeKg   Int
+  tipo           TipoVeiculo
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum TipoVeiculo {
+  CAMINHAO
+  VAN
+  CARRETA
+  UTILITARIO
+}
+
+
 
 
