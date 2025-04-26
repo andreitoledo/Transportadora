@@ -18,7 +18,6 @@ enum Role {
   user
 }
 
-
 model User {
   id            String    @id @default(uuid())
   name          String
@@ -30,7 +29,6 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   //Relations and Indexes
- 
 }
 
 enum TipoCliente {
@@ -39,53 +37,53 @@ enum TipoCliente {
 }
 
 model Cliente {
-  id         String     @id @default(uuid())
-  nome       String
-  tipo       TipoCliente
-  documento  String
-  email      String     @unique
-  telefone   String
-  endereco   String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id        String      @id @default(uuid())
+  nome      String
+  tipo      TipoCliente
+  documento String
+  email     String      @unique
+  telefone  String
+  endereco  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
-  contatos   Contato[]
-  pedidosRemetente   Pedido[] @relation("Remetente")
-  pedidosDestinatario Pedido[] @relation("Destinatario")
+  contatos            Contato[]
+  pedidosRemetente    Pedido[]  @relation("Remetente")
+  pedidosDestinatario Pedido[]  @relation("Destinatario")
 }
 
-
-
 model Contato {
-  id           String   @id @default(uuid())
+  id           String  @id @default(uuid())
   nome         String
   email        String
   telefone     String
   departamento String?
   clienteId    String
-  cliente      Cliente  @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  cliente      Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
 }
 
 model Pedido {
-  id              String   @id @default(uuid())
-  codigoRastreamento String @unique
-  descricao       String
-  peso            Float
-  dimensoes       String
-  valorMercadoria Float
-  tipoEntrega     TipoEntrega
-  status          StatusPedido @default(AGUARDANDO_COLETA)
-  observacoes     String?
-  enderecoColeta  String
-  enderecoEntrega String
-  remetenteId     String
-  destinatarioId  String
+  id                 String       @id @default(uuid())
+  codigoRastreamento String       @unique
+  descricao          String
+  peso               Float
+  dimensoes          String
+  valorMercadoria    Float
+  tipoEntrega        TipoEntrega
+  status             StatusPedido @default(AGUARDANDO_COLETA)
+  observacoes        String?
+  enderecoColeta     String
+  enderecoEntrega    String
+  remetenteId        String
+  destinatarioId     String
 
-  remetente       Cliente @relation("Remetente", fields: [remetenteId], references: [id])
-  destinatario    Cliente @relation("Destinatario", fields: [destinatarioId], references: [id])
+  remetente    Cliente @relation("Remetente", fields: [remetenteId], references: [id])
+  destinatario Cliente @relation("Destinatario", fields: [destinatarioId], references: [id])
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  coleta Coleta?
 }
 
 enum TipoEntrega {
@@ -102,16 +100,18 @@ enum StatusPedido {
 }
 
 model Motorista {
-  id            String   @id @default(uuid())
-  nome          String
-  cpf           String   @unique
-  telefone      String
-  email         String?
-  categoriaCnh  CategoriaCnh
-  numeroCnh     String
-  validadeCnh   DateTime
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String       @id @default(uuid())
+  nome         String
+  cpf          String       @unique
+  telefone     String
+  email        String?
+  categoriaCnh CategoriaCnh
+  numeroCnh    String
+  validadeCnh  DateTime
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  coletas Coleta[]
 }
 
 enum CategoriaCnh {
@@ -123,15 +123,17 @@ enum CategoriaCnh {
 }
 
 model Veiculo {
-  id             String   @id @default(uuid())
-  placa          String   @unique
-  modelo         String
-  marca          String
-  ano            Int
-  capacidadeKg   Int
-  tipo           TipoVeiculo
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id           String      @id @default(uuid())
+  placa        String      @unique
+  modelo       String
+  marca        String
+  ano          Int
+  capacidadeKg Int
+  tipo         TipoVeiculo
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  coletas        Coleta[] 
 }
 
 enum TipoVeiculo {
@@ -141,6 +143,25 @@ enum TipoVeiculo {
   UTILITARIO
 }
 
+enum StatusColeta {
+  PENDENTE
+  EM_ANDAMENTO
+  CONCLUIDA
+  CANCELADA
+}
 
+model Coleta {
+  id          String       @id @default(uuid())
+  pedidoId    String       @unique
+  motoristaId String
+  veiculoId   String
+  dataColeta  DateTime
+  status      StatusColeta @default(PENDENTE)
 
+  pedido    Pedido    @relation(fields: [pedidoId], references: [id])
+  motorista Motorista @relation(fields: [motoristaId], references: [id])
+  veiculo   Veiculo   @relation(fields: [veiculoId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
