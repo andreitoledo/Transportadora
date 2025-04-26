@@ -133,7 +133,7 @@ model Veiculo {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
-  coletas        Coleta[] 
+  coletas Coleta[]
 }
 
 enum TipoVeiculo {
@@ -162,6 +162,27 @@ model Coleta {
   motorista Motorista @relation(fields: [motoristaId], references: [id])
   veiculo   Veiculo   @relation(fields: [veiculoId], references: [id])
 
+  entrega Entrega? @relation("ColetaEntrega")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Entrega {
+  id            String        @id @default(uuid())
+  coletaId      String        @unique
+  dataEntrega   DateTime
+  statusEntrega StatusEntrega @default(PENDENTE)
+  observacoes   String?
+
+  coleta Coleta @relation("ColetaEntrega", fields: [coletaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum StatusEntrega {
+  PENDENTE
+  ENTREGUE
+  NAO_ENTREGUE
 }

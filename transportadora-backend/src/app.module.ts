@@ -11,6 +11,7 @@ import { PedidosModule } from './pedidos/pedidos.module';
 import { MotoristasModule } from './motoristas/motoristas.module';
 import { VeiculosModule } from './veiculos/veiculos.module';
 import { ColetasModule } from './coletas/coletas.module';
+import { EntregasModule } from './entregas/entregas.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { ColetasModule } from './coletas/coletas.module';
     PedidosModule,
     MotoristasModule,
     VeiculosModule,
-    ColetasModule
+    ColetasModule,
+    EntregasModule
   ],
   controllers: [AppController],
   providers: [AppService],
