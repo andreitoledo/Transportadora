@@ -19,4 +19,10 @@ export class RelatoriosController {
   async getColetasStatus() {
     return this.relatoriosService.getColetasStatus();
   }
+
+  @Get('faturamento-periodo')
+  @ApiOperation({ summary: 'Listar faturamento total por mês' })
+  async getFaturamentoPorPeriodo() {
+    return this.relatoriosService.getFaturamentoPorPeriodo();
+  }
 }

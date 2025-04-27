@@ -1,35 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { format } from 'date-fns';
 
 @Injectable()
 export class RelatoriosService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async getPedidosStatus() {
-    const result = await this.prisma.pedido.groupBy({
+    return this.prisma.pedido.groupBy({
       by: ['status'],
-      _count: {
-        _all: true,
-      },
+      _count: { status: true },
     });
-
-    return result.map((r) => ({
-      status: r.status,
-      total: r._count._all,
-    }));
   }
 
   async getColetasStatus() {
-    const result = await this.prisma.coleta.groupBy({
+    return this.prisma.coleta.groupBy({
       by: ['status'],
-      _count: {
-        _all: true,
+      _count: { status: true },
+    });
+  }
+
+  async getFaturamentoPorPeriodo() {
+    const faturas = await this.prisma.fatura.findMany({
+      select: {
+        valor: true,
+        dataPagamento: true, // ✅ Usar a data de pagamento!
       },
     });
 
-    return result.map((r) => ({
-      status: r.status,
-      total: r._count._all,
-    }));
+    const faturamentoPorMes: { [mes: string]: number } = {};
+
+    faturas.forEach(fatura => {
+      if (fatura.dataPagamento) {
+        const mes = format(new Date(fatura.dataPagamento), 'yyyy-MM'); // ✅ Corrigir para Date
+        faturamentoPorMes[mes] = (faturamentoPorMes[mes] || 0) + Number(fatura.valor); // ✅ Convertendo Decimal para Number
+      }
+    });
+
+    return faturamentoPorMes;
   }
 }
