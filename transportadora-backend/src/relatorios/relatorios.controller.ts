@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { RelatoriosService } from './relatorios.service'; 
+import { RelatoriosService } from './relatorios.service';
 import { ApiOperation } from '@nestjs/swagger';
 
 @ApiTags('relatorios')
 @Controller('relatorios')
 export class RelatoriosController {
-  constructor(private readonly relatoriosService: RelatoriosService) {}
+  constructor(private readonly relatoriosService: RelatoriosService) { }
 
   @Get('pedidos-status')
   @ApiOperation({ summary: 'Listar total de pedidos por status' })
@@ -25,4 +25,10 @@ export class RelatoriosController {
   async getFaturamentoPorPeriodo() {
     return this.relatoriosService.getFaturamentoPorPeriodo();
   }
+
+  @Get('pedidos-por-cliente')
+  async getPedidosPorCliente() {
+    return this.relatoriosService.getPedidosPorCliente();
+  }
+
 }

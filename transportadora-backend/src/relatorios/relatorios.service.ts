@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 @Injectable()
 export class RelatoriosService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async getPedidosStatus() {
     return this.prisma.pedido.groupBy({
@@ -39,4 +39,38 @@ export class RelatoriosService {
 
     return faturamentoPorMes;
   }
+
+  // Clientes
+
+  async getPedidosPorCliente() {
+    const pedidos = await this.prisma.pedido.findMany({
+      select: {
+        remetenteId: true,
+      },
+    });
+  
+    const clientes = await this.prisma.cliente.findMany({
+      select: {
+        id: true,
+        nome: true,
+      },
+    });
+  
+    const pedidosPorCliente: { [clienteId: string]: number } = {};
+  
+    pedidos.forEach((pedido) => {
+      pedidosPorCliente[pedido.remetenteId] = (pedidosPorCliente[pedido.remetenteId] || 0) + 1;
+    });
+  
+    const resultado = clientes.map((cliente) => ({
+      clienteId: cliente.id,
+      clienteNome: cliente.nome,
+      totalPedidos: pedidosPorCliente[cliente.id] || 0,
+    }));
+  
+    // Só retorna quem tiver pelo menos 1 pedido
+    return resultado.filter((item) => item.totalPedidos > 0);
+  }
+  
+
 }
