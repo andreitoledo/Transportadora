@@ -13,6 +13,7 @@ import { VeiculosModule } from './veiculos/veiculos.module';
 import { ColetasModule } from './coletas/coletas.module';
 import { EntregasModule } from './entregas/entregas.module';
 import { FaturasModule } from './faturas/faturas.module';
+import { RelatoriosModule } from './relatorios/relatorios.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { FaturasModule } from './faturas/faturas.module';
     VeiculosModule,
     ColetasModule,
     EntregasModule,
-    FaturasModule
+    FaturasModule,
+    RelatoriosModule
   ],
   controllers: [AppController],
   providers: [AppService],
