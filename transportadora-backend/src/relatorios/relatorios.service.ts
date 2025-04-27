@@ -1,27 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RelatoriosService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async getPedidosStatus() {
-    const aguardando = await this.prisma.pedido.count({
-      where: { status: 'AGUARDANDO_COLETA' }
+    const result = await this.prisma.pedido.groupBy({
+      by: ['status'],
+      _count: {
+        _all: true,
+      },
     });
 
-    const emTransito = await this.prisma.pedido.count({
-      where: { status: 'EM_TRANSITO' }
+    return result.map((r) => ({
+      status: r.status,
+      total: r._count._all,
+    }));
+  }
+
+  async getColetasStatus() {
+    const result = await this.prisma.coleta.groupBy({
+      by: ['status'],
+      _count: {
+        _all: true,
+      },
     });
 
-    const entregue = await this.prisma.pedido.count({
-      where: { status: 'ENTREGUE' }
-    });
-
-    return {
-      aguardando_coleta: aguardando,
-      em_transito: emTransito,
-      entregue: entregue
-    };
+    return result.map((r) => ({
+      status: r.status,
+      total: r._count._all,
+    }));
   }
 }
