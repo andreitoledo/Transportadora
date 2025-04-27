@@ -32,9 +32,15 @@ export class RelatoriosController {
   }
 
   @Get('entregas-motorista')
-async getEntregasPorMotorista() {
-  return this.relatoriosService.getEntregasPorMotorista();
-}
+  async getEntregasPorMotorista() {
+    return this.relatoriosService.getEntregasPorMotorista();
+  }
+
+  @Get('coletas-veiculo')
+  async getColetasPorVeiculo() {
+    return this.relatoriosService.getColetasPorVeiculo();
+  }
+
 
 
 }

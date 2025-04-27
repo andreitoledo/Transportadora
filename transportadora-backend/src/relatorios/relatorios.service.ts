@@ -110,6 +110,42 @@ export class RelatoriosService {
     return resultado.filter((item) => item.totalEntregas > 0);
   }
   
+  // VEICULOS
+
+  async getColetasPorVeiculo() {
+    const coletas = await this.prisma.coleta.findMany({
+      select: {
+        veiculoId: true,
+      },
+    });
+  
+    const veiculos = await this.prisma.veiculo.findMany({
+      select: {
+        id: true,
+        placa: true,
+        modelo: true,
+        marca: true,
+      },
+    });
+  
+    const coletasPorVeiculo: { [veiculoId: string]: number } = {};
+  
+    coletas.forEach((coleta) => {
+      if (coleta.veiculoId) {
+        coletasPorVeiculo[coleta.veiculoId] = (coletasPorVeiculo[coleta.veiculoId] || 0) + 1;
+      }
+    });
+  
+    const resultado = veiculos.map((veiculo) => ({
+      veiculoId: veiculo.id,
+      placa: veiculo.placa,
+      modelo: veiculo.modelo,
+      marca: veiculo.marca,
+      totalColetas: coletasPorVeiculo[veiculo.id] || 0,
+    }));
+  
+    return resultado.filter((item) => item.totalColetas > 0);
+  }
   
   
 
