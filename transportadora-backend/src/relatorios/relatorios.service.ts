@@ -71,6 +71,46 @@ export class RelatoriosService {
     // Só retorna quem tiver pelo menos 1 pedido
     return resultado.filter((item) => item.totalPedidos > 0);
   }
+
+  // MOTORISTAS
+
+  async getEntregasPorMotorista() {
+    const entregas = await this.prisma.entrega.findMany({
+      select: {
+        coleta: {
+          select: {
+            motoristaId: true,
+          },
+        },
+      },
+    });
+  
+    const motoristas = await this.prisma.motorista.findMany({
+      select: {
+        id: true,
+        nome: true,
+      },
+    });
+  
+    const entregasPorMotorista: { [motoristaId: string]: number } = {};
+  
+    entregas.forEach((entrega) => {
+      const motoristaId = entrega.coleta?.motoristaId;
+      if (motoristaId) {
+        entregasPorMotorista[motoristaId] = (entregasPorMotorista[motoristaId] || 0) + 1;
+      }
+    });
+  
+    const resultado = motoristas.map((motorista) => ({
+      motoristaId: motorista.id,
+      motoristaNome: motorista.nome,
+      totalEntregas: entregasPorMotorista[motorista.id] || 0,
+    }));
+  
+    return resultado.filter((item) => item.totalEntregas > 0);
+  }
+  
+  
   
 
 }

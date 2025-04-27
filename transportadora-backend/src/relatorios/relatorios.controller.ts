@@ -31,4 +31,10 @@ export class RelatoriosController {
     return this.relatoriosService.getPedidosPorCliente();
   }
 
+  @Get('entregas-motorista')
+async getEntregasPorMotorista() {
+  return this.relatoriosService.getEntregasPorMotorista();
+}
+
+
 }
