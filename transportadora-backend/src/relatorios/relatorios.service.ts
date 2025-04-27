@@ -146,6 +146,62 @@ export class RelatoriosService {
   
     return resultado.filter((item) => item.totalColetas > 0);
   }
+
+  // DASHBOARD COM OS RELATORIOS
+
+  async getDashboard() {
+    const [
+      pedidosStatus,
+      coletasStatus,
+      faturamento,
+      topClientes,
+      entregasMotoristas,
+      coletasVeiculo,
+    ] = await Promise.all([
+      this.getPedidosStatus(),
+      this.getColetasStatus(),
+      this.getFaturamentoPorPeriodo(), // ✅ nome correto
+      this.getTopClientes(),           
+      this.getEntregasPorMotorista(),
+      this.getColetasPorVeiculo(),
+    ]);
+  
+    return {
+      pedidosStatus,
+      coletasStatus,
+      faturamento,
+      topClientes,
+      entregasMotoristas,
+      coletasVeiculo,
+    };
+  }
+  
+  // TOP 5 CLIENTES COM MAIOR NUMERO DE PEDIDOS
+  async getTopClientes() {
+    const pedidosPorCliente = await this.prisma.pedido.groupBy({
+      by: ['remetenteId'],
+      _count: { id: true },
+      orderBy: { _count: { id: 'desc' } },
+      take: 5,
+    });
+  
+    const result = [];
+  
+    for (const item of pedidosPorCliente) {
+      const cliente = await this.prisma.cliente.findUnique({
+        where: { id: item.remetenteId },
+        select: { nome: true },
+      });
+  
+      result.push({
+        cliente: cliente?.nome || 'Desconhecido',
+        totalPedidos: item._count.id,
+      });
+    }
+  
+    return result;
+  }
+  
   
   
 

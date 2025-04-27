@@ -41,6 +41,12 @@ export class RelatoriosController {
     return this.relatoriosService.getColetasPorVeiculo();
   }
 
+  @Get('dashboard')
+async getDashboard() {
+  return this.relatoriosService.getDashboard();
+}
+
+
 
 
 }
