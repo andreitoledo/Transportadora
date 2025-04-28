@@ -1,7 +1,7 @@
 // src/components/Layout/Drawer.tsx
 
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
-import { Dashboard, People, LocalShipping } from '@mui/icons-material';
+import { Dashboard, People, LocalShipping, Contacts } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 export default function DrawerComponent() {
@@ -12,7 +12,7 @@ export default function DrawerComponent() {
   const menuItems = [
     { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
     { text: 'Clientes', icon: <People />, path: '/clientes' },
-    { text: 'Contatos', icon: <People />, path: '/contatos' },
+    { text: 'Contatos', icon: <Contacts />, path: '/contatos' }, // <- Novo item de menu
     { text: 'Pedidos', icon: <LocalShipping />, path: '/pedidos' },
   ];
 
