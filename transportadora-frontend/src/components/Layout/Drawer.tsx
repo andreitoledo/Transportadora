@@ -1,18 +1,20 @@
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+// src/components/Layout/Drawer.tsx
+
+import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
+import { Dashboard, People, LocalShipping } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import PeopleIcon from '@mui/icons-material/People';
 
-const drawerWidth = 240;
-
-export const DrawerComponent = () => {
+export default function DrawerComponent() {
   const navigate = useNavigate();
+
+  const drawerWidth = 240;
+
+  const menuItems = [
+    { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
+    { text: 'Clientes', icon: <People />, path: '/clientes' },
+    { text: 'Contatos', icon: <People />, path: '/contatos' },
+    { text: 'Pedidos', icon: <LocalShipping />, path: '/pedidos' },
+  ];
 
   return (
     <Drawer
@@ -23,39 +25,15 @@ export const DrawerComponent = () => {
         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
       }}
     >
+      <Toolbar />
       <List>
-        <ListItem button onClick={() => navigate('/')}>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-
-        {/* Adiciona Clientes ao menu lateral */}
-        <ListItem button onClick={() => navigate('/clientes')}>
-          <ListItemIcon>
-            <PeopleIcon /> {/* importe do MUI */}
-          </ListItemIcon>
-          <ListItemText primary="Clientes" />
-        </ListItem>
-
-        {/* Adiciona Contatos ao menu lateral */}
-        <ListItem button onClick={() => navigate('/contatos')}>
-          <ListItemIcon>
-            <PeopleIcon /> {/* importe do MUI */}
-          </ListItemIcon>
-          <ListItemText primary="Contatos" />
-        </ListItem>
-
-        {/* Adiciona Pedidos ao menu lateral */}
-        <ListItem button onClick={() => navigate('/pedidos')}>
-          <ListItemIcon>
-            <PeopleIcon /> {/* importe do MUI */}
-          </ListItemIcon>
-          <ListItemText primary="Pedidos" />
-        </ListItem>
-
+        {menuItems.map((item) => (
+          <ListItemButton key={item.text} onClick={() => navigate(item.path)}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItemButton>
+        ))}
       </List>
     </Drawer>
   );
-};
+}
