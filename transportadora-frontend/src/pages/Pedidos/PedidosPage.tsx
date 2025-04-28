@@ -22,7 +22,7 @@ export const PedidosPage = () => {
   const loadPedidos = async () => {
     try {
       const res = await axios.get('http://localhost:3000/api/v1/pedidos');
-      setPedidos(res.data);
+      setPedidos(res.data.data); 
     } catch (err) {
       console.error('Erro ao carregar pedidos:', err);
     } finally {
@@ -32,28 +32,38 @@ export const PedidosPage = () => {
 
   const handleSave = async (data: any) => {
     try {
+      console.log('🚚 Dados recebidos para salvar:', data);
+  
       const payload = {
         descricao: data.descricao,
-        valorMercadoria: data.valorMercadoria,
-        peso: data.peso,
+        valorMercadoria: Number(data.valorMercadoria),
+        peso: Number(data.peso),
         dimensoes: data.dimensoes,
         tipoEntrega: data.tipoEntrega,
-        status: data.status, // ✅ Correção feita aqui
+        status: data.status,
         enderecoColeta: data.enderecoColeta,
         enderecoEntrega: data.enderecoEntrega,
-        observacoes: data.observacoes,
+        observacoes: data.observacoes || '',
         remetenteId: data.remetenteId,
         destinatarioId: data.destinatarioId,
       };
-
+  
       console.log('🚚 Payload enviado:', payload);
-
+  
+      // Validação manual
+      if (!payload.descricao || !payload.valorMercadoria || !payload.peso || !payload.dimensoes ||
+          !payload.tipoEntrega || !payload.status || !payload.enderecoColeta || !payload.enderecoEntrega ||
+          !payload.remetenteId || !payload.destinatarioId) {
+        alert('Preencha todos os campos obrigatórios!');
+        return;
+      }
+  
       if (editingPedido) {
         await axios.put(`http://localhost:3000/api/v1/pedidos/${editingPedido.id}`, payload);
       } else {
         await axios.post('http://localhost:3000/api/v1/pedidos', payload);
       }
-
+  
       setDialogOpen(false);
       setEditingPedido(null);
       loadPedidos();
@@ -61,6 +71,9 @@ export const PedidosPage = () => {
       console.error('Erro ao salvar pedido:', err);
     }
   };
+  
+  
+  
 
   const handleDelete = async (id: string) => {
     if (confirm('Deseja realmente excluir este pedido?')) {

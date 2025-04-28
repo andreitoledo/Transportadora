@@ -30,27 +30,23 @@ export const DashboardPage = () => {
 
   const fetchPedidos = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/v1/pedidos');
-      const pedidos = res.data;
-
-      setTotalPedidos(pedidos.length);
-      setValorTotal(pedidos.reduce((sum: number, pedido: any) => sum + pedido.valorMercadoria, 0));
-
-      const statusCount = { AGUARDANDO_COLETA: 0, EM_TRANSITO: 0, ENTREGUE: 0 };
-      const tipoCount = { NORMAL: 0, EXPRESSA: 0, AGENDADA: 0 };
-
-      pedidos.forEach((pedido: any) => {
-        statusCount[pedido.status] = (statusCount[pedido.status] || 0) + 1;
-        tipoCount[pedido.tipoEntrega] = (tipoCount[pedido.tipoEntrega] || 0) + 1;
+      const res = await api.get('/pedidos');
+      const pedidos = res.data.data; // <-- AQUI você pega o array correto
+  
+      console.log('Pedidos carregados:', pedidos);
+  
+      const totalPedidos = pedidos.length;
+      const pedidosEntregues = pedidos.filter((p: any) => p.status === 'ENTREGUE').length;
+  
+      setResumo({
+        totalPedidos,
+        pedidosEntregues,
       });
-
-      setPedidosPorStatus(statusCount);
-      setPedidosPorTipo(tipoCount);
-
     } catch (error) {
       console.error('Erro ao buscar pedidos:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchPedidos();
