@@ -209,3 +209,18 @@ enum StatusFatura {
   CANCELADO
 }
 
+model Motorista {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  cpf          String   @unique
+  cnh          String
+  validadeCnh  DateTime
+  telefone     String
+  email        String
+  status       Boolean  @default(true)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+

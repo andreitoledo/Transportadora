@@ -6,6 +6,7 @@ import { ClientesPage } from '../pages/Clientes/ClientesPage';
 import { ContatosPage } from '../pages/Contatos/ContatosPage';
 import { PedidosPage } from '../pages/Pedidos/PedidosPage';
 import { DashboardPage } from '../pages/Dashboard/DashboardPage';
+import { MotoristasPage } from '../pages/Motoristas/MotoristasPage';
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -23,6 +24,8 @@ export const AppRoutes = () => {
         <Route path="clientes" element={<ClientesPage />} />
         <Route path="contatos" element={<ContatosPage />} />
         <Route path="pedidos" element={<PedidosPage />} />
+        <Route path="motoristas" element={<MotoristasPage />} />       
+
       </Route>
     </>
   ) : (

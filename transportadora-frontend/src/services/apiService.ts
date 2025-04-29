@@ -29,3 +29,29 @@ const pedidosMock = [
     return clientesMock;
   };
   
+  import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'http://localhost:3000', // ou ajuste se sua API mudar
+});
+
+// Motoristas
+export const getMotoristas = async () => {
+  const response = await api.get('/motoristas');
+  return response.data;
+};
+
+export const createMotorista = async (data: any) => {
+  const response = await api.post('/motoristas', data);
+  return response.data;
+};
+
+export const updateMotorista = async (id: string, data: any) => {
+  const response = await api.patch(`/motoristas/${id}`, data);
+  return response.data;
+};
+
+export const deleteMotorista = async (id: string) => {
+  const response = await api.delete(`/motoristas/${id}`);
+  return response.data;
+};

@@ -26,6 +26,7 @@ export default function DrawerComponent() {
     { text: 'Clientes', icon: <People />, path: '/clientes' },
     { text: 'Contatos', icon: <Contacts />, path: '/contatos' },
     { text: 'Pedidos', icon: <LocalShipping />, path: '/pedidos' },
+    { text: 'Motoristas', icon: <People />, path: '/motoristas' },
   ];
 
   return (
