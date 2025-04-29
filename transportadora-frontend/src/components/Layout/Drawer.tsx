@@ -1,7 +1,7 @@
 // src/components/Layout/Drawer.tsx
 
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, IconButton, Divider, Tooltip, Box, useTheme } from '@mui/material';
-import { Dashboard, People, LocalShipping, Contacts, Menu, ChevronLeft, Logout, Home } from '@mui/icons-material';
+import { Dashboard, People, LocalShipping, Contacts, Menu, ChevronLeft, Logout, Home, DirectionsCar } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext'; // <- certifique-se que existe isso
@@ -27,6 +27,7 @@ export default function DrawerComponent() {
     { text: 'Contatos', icon: <Contacts />, path: '/contatos' },
     { text: 'Pedidos', icon: <LocalShipping />, path: '/pedidos' },
     { text: 'Motoristas', icon: <People />, path: '/motoristas' },
+    { text: 'Veiculos', icon: <DirectionsCar />, path: '/veiculos' },
   ];
 
   return (

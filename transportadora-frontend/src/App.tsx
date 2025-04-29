@@ -9,7 +9,7 @@ function App() {
   return (
     <AuthProvider>
       <AppRoutes />
-      <ToastContainer/>
+      <ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider>
   );
 }

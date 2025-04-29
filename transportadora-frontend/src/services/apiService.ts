@@ -1,4 +1,9 @@
 // src/services/apiService.ts
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'http://localhost:3000',
+});
 
 // Mock de dados
 
@@ -29,11 +34,7 @@ const pedidosMock = [
     return clientesMock;
   };
   
-  import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000', // ou ajuste se sua API mudar
-});
 
 // Motoristas
 export const getMotoristas = async () => {
@@ -48,10 +49,12 @@ export const createMotorista = async (data: any) => {
 
 export const updateMotorista = async (id: string, data: any) => {
   const response = await api.patch(`/motoristas/${id}`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const deleteMotorista = async (id: string) => {
   const response = await api.delete(`/motoristas/${id}`);
   return response.data;
 };
+
+export { api };
